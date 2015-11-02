@@ -4,8 +4,10 @@ from django.http import HttpResponse, Http404
 from .models import Course
 
 def course(request, id):
-    
-    course = get_object_or_404(Course, id=id)
+    try:
+        course = Course.objects.get(id=id)
+    except Course.DoesNotExist:
+        raise Http404("Course does not exist")
     return render(request, 'detail.html', {'course': course})
     
 def index(request):
