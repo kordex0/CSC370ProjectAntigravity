@@ -8,9 +8,9 @@ def course(request, id):
         course = Course.objects.get(id=id)
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
-    return render(request, 'detail.html', {'course': course})
+    return render(request, 'courses/detail.html', {'course': course})
     
 def index(request):
     courses_list = Course.objects.order_by('name')
     context = {'courses_list': courses_list,}
-    return render(request, 'index.html', context)
+    return render(request, 'courses/index.html', context)

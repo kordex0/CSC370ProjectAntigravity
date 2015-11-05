@@ -1,4 +1,7 @@
-# CSC370ProjectAntigravity
+# CSC370ProjectAntigravitywget wget https://bootstrap.pypa.io/ez_setup.py -O - | pythonhttps://bootstrap.pypa.io/ez_setup.py -O - | python
+
+wheel
+setuptools
 
 python manage.py migrate
 

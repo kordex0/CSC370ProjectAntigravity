@@ -1,3 +1,7 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'courses/styles.css' %}" />
+
 {% if courses_list %}
     <ul>
     {% for course in courses_list %}
