@@ -16,9 +16,17 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from rest_framework import routers
+
+from courses import views as coursesviews
+
+router = routers.DefaultRouter()
+router.register(r'courses', coursesviews.CourseViewSet)
+
 urlpatterns = [
     url(r'^assignments/', include('assignments.urls', namespace='assignments')),
     url(r'^courses/', include('courses.urls', namespace='courses')),
     url(r'^users/', include('users.urls', namespace='courses')),
+    url(r'^json/', include(router.urls)),
     url(r'^admin/', include(admin.site.urls)),
 ]
