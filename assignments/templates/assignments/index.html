@@ -1,0 +1,13 @@
+{% load staticfiles %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'assignments/styles.css' %}" />
+
+{% if assignments_list %}
+    <ul>
+    {% for assignment in assignments_list %}
+        <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment.name}}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No assignments are available.</p>
+{% endif %}
