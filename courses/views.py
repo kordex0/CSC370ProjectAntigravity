@@ -7,10 +7,9 @@ from .models import Course, Section
 def course(request, id):
     try:
         course = Course.objects.get(id=id)
-        section_list = Section.objects.filter(course_id=id)
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
-    return render(request, 'courses/detail.html', {'course': course, 'sections': section_list})
+    return render(request, 'courses/detail.html', {'course': course })
 
 def section_detail(request, id):
     try:
