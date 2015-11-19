@@ -1,6 +1,6 @@
 <h1>{{course.name}}</h1>
 <ul>
-{% for section in sections %}
+{% for section in course.sections.all %}
     <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
 {% endfor %}
 </ul>

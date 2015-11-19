@@ -8,7 +8,7 @@ class Course(models.Model):
    
 class Section(models.Model):
     name = models.CharField(max_length=255)
-    course = models.ForeignKey('Course')
+    course = models.ForeignKey('Course', related_name='sections')
     teacher = models.ForeignKey('users.Teacher', blank=True, null=True)
     students = models.ManyToManyField('users.Student', blank=True)
     
