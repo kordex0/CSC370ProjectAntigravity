@@ -1,6 +1,6 @@
 <h1>{{course.name}}</h1>
 <ul>
-{% for student in course.students.all %}
-    <li>{{ student.django_user.first_name }}</li>
+{% for section in sections %}
+    <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
 {% endfor %}
 </ul>
