@@ -1,0 +1,7 @@
+<h1>{{section}}</h1>
+<h2>Instructor: {{section.teacher}}</h2>
+<ul>
+{% for student in section.students.all %}
+    <li>{{ student.django_user.first_name }}</li>
+{% endfor %}
+</ul>

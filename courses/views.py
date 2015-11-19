@@ -2,14 +2,22 @@ from django.shortcuts import render
 from django.http import Http404, JsonResponse
 from django.core import serializers
 
-from .models import Course
+from .models import Course, Section
 
 def course(request, id):
     try:
         course = Course.objects.get(id=id)
+        section_list = Section.objects.filter(course_id=id)
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
-    return render(request, 'courses/detail.html', {'course': course})
+    return render(request, 'courses/detail.html', {'course': course, 'sections': section_list})
+
+def section_detail(request, id):
+    try:
+        section = Section.objects.get(id=id)
+    except Section.DoesNotExist:
+        raise Http404("Section does not exist")
+    return render(request, 'section/section.html', {'section': section})
     
 def index(request):
     do_json = request.GET.get('json', False)
