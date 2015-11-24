@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = (
@@ -109,3 +108,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGIN_URL = '/users/login/'
+
+LOGOUT_URL = '/users/logout/'
+
+LOGIN_REDIRECT_URL = '/users/profile/'
