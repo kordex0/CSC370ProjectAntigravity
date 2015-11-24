@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import validate_student
+
 class Assignment(models.Model):
     name = models.CharField(max_length=255)
     section = models.ForeignKey('courses.Section')
@@ -11,5 +13,5 @@ class Assignment(models.Model):
 
 class Submission(models.Model):
     assignment = models.ForeignKey('Assignment')
-    students = models.ManyToManyField('users.Student')
+    students = models.ManyToManyField('users.User')
 
