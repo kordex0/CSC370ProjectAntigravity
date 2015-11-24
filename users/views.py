@@ -12,7 +12,7 @@ def user_profile(request):
     # to one of these users? Model function in User? Would that require
     # two lookups?
     user = request.user.user
-    user_type = user.get_roll_display()
+    user_type = 'student'
 
     return render(request, 'users/profile.html', {'user': user, 'user_type': user_type})
     
