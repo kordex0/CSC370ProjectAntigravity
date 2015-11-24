@@ -20,6 +20,9 @@ class User(models.Model):
     def __str__(self):
         return self.django_user.first_name + " " + self.django_user.last_name
 
+    def get_role_display(self):
+        return self.ROLE_CHOICES[self.role][1]
+
 def validate_admin(user):
     if user.role != User.ADMIN:
         raise ValidationError("User must be an admin");
