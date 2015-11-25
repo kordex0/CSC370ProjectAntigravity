@@ -8,7 +8,20 @@
 <h2 class=error>ERROR: {{errormsg}}</h2>
 {% endif %}
 
-{% if courses_list %}
+{% if courses_list and user and user.is_admin %}
+    <ul>
+    {% for course in courses_list %}
+        <li><a href="{% url 'courses:detail' course.id %}">{{course.name}}</a>
+            <form action="{% url 'courses:delete_course' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="course_id" value="{{course.id}}"/>
+            <input type="submit" value="Delete Course" />
+            </form>
+        </li>
+    {% endfor %}
+    </ul>
+</form>
+{% elif courses_list %}
     <ul>
     {% for course in courses_list %}
         <li><a href="{% url 'courses:detail' course.id %}">{{course.name}}</a></li>
