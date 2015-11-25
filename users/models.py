@@ -32,15 +32,18 @@ class User(models.Model):
     def is_teacher(self):
         return True if self.role == self.TEACHER else False
 
-def validate_admin(user):
+def validate_admin(user_id):
+    user = User.objects.get(id=user_id)  
     if user.role != User.ADMIN:
         raise ValidationError("User must be an admin");
 
-def validate_teacher(user):
+def validate_teacher(user_id):
+    user = User.objects.get(id=user_id)  
     if user.role != User.TEACHER:
         raise ValidationError("User must be a teacher");
 
-def validate_student(user):
+def validate_student(user_id):
+    user = User.objects.get(id=user_id)  
     if user.role != User.STUDENT:
         raise ValidationError("User must be a student");
 

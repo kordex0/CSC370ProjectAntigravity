@@ -1,10 +1,16 @@
 <h1>Hello {{user.django_user.first_name}}</h1>
+{% if user != False %}
+
 {% if user.is_student %}
 You are a student.
 {% elif user.is_teacher %}
 You are a teacher.
 {% elif user.is_admin %}
 ADMIN POWERS
+{% else %}
+This account is not registered as a student, teacher, or admin.
+{% endif %}
+
 {% else %}
 This account is not registered as a student, teacher, or admin.
 {% endif %}
