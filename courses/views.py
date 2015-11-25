@@ -1,9 +1,12 @@
 from django.shortcuts import render
-from django.http import Http404, JsonResponse
+from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse
+from django.db import DataError, IntegrityError
 
 from .models import Course, Section
+from users.models import User
 from assignments.models import Assignment
 
 def course(request, id):
@@ -21,16 +24,20 @@ def section_detail(request, id):
         raise Http404("Section does not exist")
     return render(request, 'section/section.html', {'section': section, 'assignments_list': assignments_list})
     
-def index(request):
+def index(request, errormsg=None):
     do_json = request.GET.get('json', False)
     courses_list = Course.objects.order_by('name')
+    try:
+        user = request.user.user
+    except (User.DoesNotExist, AttributeError):
+        user = False
     if do_json :
         json_object = []
         for course in courses_list:
             json_object.append({'id':course.id, 'name':course.name})
         return JsonResponse(json_object, safe=False)
     else:
-        context = {'courses_list': courses_list,}
+        context = {'courses_list': courses_list, 'user': user, 'errormsg': errormsg}
         return render(request, 'courses/index.html', context)
 
 def assignment(request, section_id):
@@ -52,5 +59,28 @@ def assignment_detail(request, assignment_id):
     except Assignment.DoesNotExist:
         raise Http404("Assignment does not exist")
     return render(request, 'assignments/detail.html', {'assignment': assignment })
+
+def add_course(request):
+    #TODO: Ensure only logged-in admins can get here
+    #Can we write a decorator to do the required test?
+    try:
+        userobj = request.user.user
+    except (User.DoesNotExist, AttributeError):
+        errormsg = "Cannot add courses: not logged in"
+    else: 
+        try:
+            if userobj.is_admin():
+                coursename = request.POST['course_name']
+                new_course = Course(name = coursename)
+                new_course.save()
+                return HttpResponseRedirect(reverse('courses:detail', args=[new_course.id]))
+            else:
+                errormsg = "Must have admin access to add courses"
+        except KeyError:
+            errormsg = "Invalid request to add_course"
+        except DataError:
+            errormsg = "Invalid course name"
+
+    return index(request, errormsg=errormsg)
 
 
