@@ -4,6 +4,10 @@
 
 <h1>All Courses</h1>
 
+{% if errormsg %}
+<h2 class=error>ERROR: {{errormsg}}</h2>
+{% endif %}
+
 {% if courses_list %}
     <ul>
     {% for course in courses_list %}
@@ -12,4 +16,14 @@
     </ul>
 {% else %}
     <p>No courses are available.</p>
+{% endif %}
+
+{% if user and user.is_admin %}
+<h2>Add a new course</h2>
+<form action="{% url 'courses:add_course' %}" method="post">
+{% csrf_token %}
+<label for="course_name">New Course Name</label><br />
+<input type="text" name="course_name" id="course_name" value="" /><br />
+<input type="submit" value="Add Course" />
+</form>
 {% endif %}
