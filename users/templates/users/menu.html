@@ -1,0 +1,8 @@
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'registration/menu.css' %}" />
+
+<ul id="menu">
+    <li><a href={% url 'users:user_profile' %}>Profile</a></li>
+    <li><a href={% url 'courses:index' %}>Classes</a></li>
+    <li><a href={% url 'users:user_logout' %}>Logout</a></li>
+</ul>

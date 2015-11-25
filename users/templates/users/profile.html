@@ -1,3 +1,5 @@
+{% load staticfiles %}
+{% include 'users/menu.html' %}
 <h1>Hello {{user.django_user.first_name}}</h1>
 {% if user != False %}
 
