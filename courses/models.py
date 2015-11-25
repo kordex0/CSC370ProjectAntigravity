@@ -16,4 +16,3 @@ class Section(models.Model):
     
     def __str__(self):
         return self.course.name + " " + self.name
-
