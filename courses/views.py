@@ -29,7 +29,7 @@ def index(request, errormsg=None):
     courses_list = Course.objects.order_by('name')
     try:
         user = request.user.user
-    except User.DoesNotExist:
+    except (User.DoesNotExist, AttributeError):
         user = False
     if do_json :
         json_object = []
@@ -64,19 +64,22 @@ def add_course(request):
     #TODO: Ensure only logged-in admins can get here
     #Can we write a decorator to do the required test?
     try:
-        if request.user.user.is_admin():
-            coursename = request.POST['course_name']
-            new_course = Course(name = coursename)
-            new_course.save()
-            return HttpResponseRedirect(reverse('courses:detail', args=[new_course.id]))
-        else:
-            errormsg = "Must have admin access to add courses"
-    except KeyError:
-        errormsg = "Invalid request to add_course"
-    except User.DoesNotExist:
+        userobj = request.user.user
+    except (User.DoesNotExist, AttributeError):
         errormsg = "Cannot add courses: not logged in"
-    except DataError:
-        errormsg = "Invalid course name"
+    else: 
+        try:
+            if userobj.is_admin():
+                coursename = request.POST['course_name']
+                new_course = Course(name = coursename)
+                new_course.save()
+                return HttpResponseRedirect(reverse('courses:detail', args=[new_course.id]))
+            else:
+                errormsg = "Must have admin access to add courses"
+        except KeyError:
+            errormsg = "Invalid request to add_course"
+        except DataError:
+            errormsg = "Invalid course name"
 
     return index(request, errormsg=errormsg)
 
