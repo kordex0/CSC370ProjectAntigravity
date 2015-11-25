@@ -23,6 +23,15 @@ class User(models.Model):
     def get_role_display(self):
         return self.ROLE_CHOICES[self.role][1]
 
+    def is_admin(self):
+        return True if self.role == self.ADMIN else False
+
+    def is_student(self):
+        return True if self.role == self.STUDENT else False
+
+    def is_teacher(self):
+        return True if self.role == self.TEACHER else False
+
 def validate_admin(user):
     if user.role != User.ADMIN:
         raise ValidationError("User must be an admin");
