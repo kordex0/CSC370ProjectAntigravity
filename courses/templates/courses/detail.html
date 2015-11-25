@@ -4,3 +4,17 @@
     <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
 {% endfor %}
 </ul>
+
+{% if user and user.is_admin %}
+<h2>Delete this course</h2>
+<form action="{% url 'courses:delete_course' %}" method="post">
+{% csrf_token %}
+<input type="hidden" name="course_id" value="{{course.id}}">
+<input type="submit" value="Delete Course" />
+</form>
+{% endif %}
+
+{% if user and user.is_teacher %}
+<h2>Add a new section</h2>
+NOT YET IMPLEMENTED
+{% endif %}

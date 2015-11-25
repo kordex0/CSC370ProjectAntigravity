@@ -91,7 +91,8 @@ def delete_course(request, user):
             if user.is_admin():
                 course_id = request.POST['course_id']
                 try:
-                    Course.objects.get(id=course_id)
+                    course = Course.objects.get(id=course_id)
+                    course.delete() 
                 except Course.DoesNotExist:
                     errormsg = "Invalid course id"
                 else:
