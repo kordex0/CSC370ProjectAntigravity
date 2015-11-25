@@ -10,12 +10,13 @@ from users.models import User
 from users.decorators import get_request_user
 from assignments.models import Assignment
 
-def course(request, id):
+@get_request_user
+def course(request, user, id):
     try:
         course = Course.objects.get(id=id)
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
-    return render(request, 'courses/detail.html', {'course': course })
+    return render(request, 'courses/detail.html', {'course': course, 'user': user })
 
 def section_detail(request, id):
     try:
@@ -71,7 +72,7 @@ def add_course(request, user):
                 coursename = request.POST['course_name']
                 new_course = Course(name = coursename)
                 new_course.save()
-                return HttpResponseRedirect(reverse('courses:detail', args=[new_course.id]))
+                return HttpResponseRedirect(reverse('courses:index', args=[new_course.id]))
             else:
                 errormsg = "Must have admin access to add courses"
         except KeyError:
@@ -83,4 +84,25 @@ def add_course(request, user):
 
     return index(request, errormsg=errormsg)
 
+@get_request_user
+def delete_course(request, user):
+    if user is not None:
+        try:
+            if user.is_admin():
+                course_id = request.POST['course_id']
+                try:
+                    course = Course.objects.get(id=course_id)
+                    course.delete() 
+                except Course.DoesNotExist:
+                    errormsg = "Invalid course id"
+                else:
+                    return HttpResponseRedirect(reverse('courses:index'))
+            else:
+                errormsg = "Must have admin access to delete courses"
+        except KeyError:
+            errormsg = "Invalid request to delete_course"
+    else:
+        errormsg = "Not logged in"
+
+    return index(request, errormsg=errormsg)
 
