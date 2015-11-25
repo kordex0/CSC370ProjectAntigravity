@@ -7,6 +7,7 @@ from django.db import DataError, IntegrityError
 
 from .models import Course, Section
 from users.models import User
+from users.decorators import get_request_user
 from assignments.models import Assignment
 
 def course(request, id):
@@ -60,16 +61,13 @@ def assignment_detail(request, assignment_id):
         raise Http404("Assignment does not exist")
     return render(request, 'assignments/detail.html', {'assignment': assignment })
 
-def add_course(request):
+@get_request_user
+def add_course(request, user):
     #TODO: Ensure only logged-in admins can get here
     #Can we write a decorator to do the required test?
-    try:
-        userobj = request.user.user
-    except (User.DoesNotExist, AttributeError):
-        errormsg = "Cannot add courses: not logged in"
-    else: 
+    if user is not None:
         try:
-            if userobj.is_admin():
+            if user.is_admin():
                 coursename = request.POST['course_name']
                 new_course = Course(name = coursename)
                 new_course.save()
@@ -80,6 +78,8 @@ def add_course(request):
             errormsg = "Invalid request to add_course"
         except DataError:
             errormsg = "Invalid course name"
+    else:
+        errormsg = "Not logged in"
 
     return index(request, errormsg=errormsg)
 
