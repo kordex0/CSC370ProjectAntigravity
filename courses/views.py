@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.db import DataError, IntegrityError
 
 from .models import Course, Section
@@ -113,11 +113,11 @@ def add_section(request, user, course_id):
             save_data = True
             section_name = request.POST['section_name']
             if user.is_teacher():
-                course_teacher = user
+                section_teacher = user
             elif user.is_admin():
                 teacher_id = request.POST['teacher_id']
-                course_teacher = User.objects.get(id=teacher_id)
-                if course_teacher.role != User.TEACHER:
+                section_teacher = User.objects.get(id=teacher_id)
+                if section_teacher.role != User.TEACHER:
                     errormsg = "Selected user is not a teacher"
                     save_data = False
             else:
@@ -125,12 +125,12 @@ def add_section(request, user, course_id):
                 save_data = False
             
             if save_data:
-                new_section = Section(name=section_name, course=course_id, teacher=course_teacher) 
+                new_section = Section(name=section_name, course_id=course_id, teacher=section_teacher) 
                 new_section.save()
                 if user.is_teacher():
-                    return HttpResponseRedirect(reverse('courses:section_detail', new_section.id))
+                    return HttpResponseRedirect(reverse('courses:section_detail', args=(new_section.id,)))
                 else:
-                    return HttpResponseRedirect(reverse('courses:detail', course_id))
+                    return HttpResponseRedirect(reverse('courses:detail', args=(course_id,)))
 
         except KeyError:
             errormsg = "Invalid request to add_section"
@@ -139,5 +139,5 @@ def add_section(request, user, course_id):
     else:
         errormsg = "Not logged in"
 
-    return course(request, user, course_id, errormsg=errormsg)
+    return course(request, user, id=course_id, errormsg=errormsg)
     

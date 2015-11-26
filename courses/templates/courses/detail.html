@@ -26,7 +26,7 @@
 
 {% if user and user.is_teacher %}
 <h2>Add a new section</h2>
-<form action="{% url 'courses:add_section' %}" method="post">
+<form action="{% url 'courses:add_section' course.id %}" method="post">
 {% csrf_token %}
 <label for="section_name">Section Name<br />
 <input type="input" name="section_name" id="section_name" /><br />
