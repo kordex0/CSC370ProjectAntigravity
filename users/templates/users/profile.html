@@ -20,6 +20,27 @@ This account is not registered as a student, teacher, or admin.
 <a href={% url 'users:user_logout' %}>Log in as someone else</a>
 
 {% if user.is_student %}
+    
+    <link rel="stylesheet" type="text/css" href="{% static 'display_box.css' %}" />
+
+    <div class="display_box">
+        <div class="header">Classes</div>
+        <div class="content">
+            <ul>
+            {% for section in sections_list %}
+                <li>
+                    <a href="{% url 'courses:section_detail' section.id %}">{{section}}</a>
+                    <form class="delete" action="url 'courses:section'" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="section_id" value="{{section.id}}"/>
+                        <input type="submit" value="X"/>
+                    </form>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
     {% if sections_list.count > 0 %}
         <h2>You are enrolled in the following sections:</h2>
         <ul>

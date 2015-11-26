@@ -23,7 +23,7 @@ def user_profile(request):
             sections_list = Section.objects.filter(students=user.id)
             for section in sections_list:
                 assignments_list.extend(Assignment.objects.filter(section=section))
-            assignments_list.sort()
+            #assignments_list.sort()
             for assignment in assignments_list:
                 if assignment.due_date > timezone.now():
                     due_assignments_list.append(assignment)
