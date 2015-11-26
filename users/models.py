@@ -29,8 +29,12 @@ class User(models.Model):
     django_user = models.OneToOneField(DjangoUser, related_name="user")
     role = models.SmallIntegerField(choices=ROLE_CHOICES)
 
-    teachers = TeacherManager() 
+    _all = models.Manager() #bit of a kludge. Django treats the first
+        # manager encountered as a special case. So, this puts in the
+        # manager that includes everything
+        
     admins = AdminManager() 
+    teachers = TeacherManager() 
     students = StudentManager() 
     
     def __str__(self):
