@@ -31,7 +31,7 @@ This account is not registered as a student, teacher, or admin.
         {% if assignments_list %}
             <ul>
             {% for assignment in assignments_list %}
-                <li><a href="{% url 'courses:assignment_detail' assignment.id %}">{{assignment.name}}</a></li>
+                <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a></li>
             {% endfor %}
             </ul>
         {% else %}

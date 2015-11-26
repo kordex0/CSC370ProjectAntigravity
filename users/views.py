@@ -20,7 +20,7 @@ def user_profile(request):
         elif user.is_student():
             sections_list = Section.objects.filter(students=user.id)
             for section in sections_list:
-                assignments_list.append(Assignment.objects.filter(section=section))
+                assignments_list.extend(Assignment.objects.filter(section=section))
             print(assignments_list)
             return render(request, 'users/profile.html', {'user': user, 'sections_list': sections_list, 'assignments_list': assignments_list})
     except User.DoesNotExist:
