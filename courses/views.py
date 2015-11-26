@@ -72,7 +72,7 @@ def add_course(request, user):
                 coursename = request.POST['course_name']
                 new_course = Course(name = coursename)
                 new_course.save()
-                return HttpResponseRedirect(reverse('courses:index', args=[new_course.id]))
+                return HttpResponseRedirect(reverse('courses:index'))
             else:
                 errormsg = "Must have admin access to add courses"
         except KeyError:
