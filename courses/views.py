@@ -11,12 +11,12 @@ from users.decorators import get_request_user
 from assignments.models import Assignment
 
 @get_request_user
-def course(request, user, id):
+def course(request, user, id, errormsg=None):
     try:
         course = Course.objects.get(id=id)
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
-    return render(request, 'courses/detail.html', {'course': course, 'user': user })
+    return render(request, 'courses/detail.html', {'course': course, 'user': user, 'errormsg':errormsg })
 
 def section_detail(request, id):
     try:
@@ -85,11 +85,10 @@ def add_course(request, user):
     return index(request, errormsg=errormsg)
 
 @get_request_user
-def delete_course(request, user):
+def delete_course(request, user, course_id):
     if user is not None:
         try:
             if user.is_admin():
-                course_id = request.POST['course_id']
                 try:
                     course = Course.objects.get(id=course_id)
                     course.delete() 
@@ -106,3 +105,39 @@ def delete_course(request, user):
 
     return index(request, errormsg=errormsg)
 
+
+@get_request_user
+def add_section(request, user, course_id):
+    if user is not None:
+        try:
+            save_data = True
+            section_name = request.POST['section_name']
+            if user.is_teacher():
+                course_teacher = user
+            elif user.is_admin():
+                teacher_id = request.POST['teacher_id']
+                course_teacher = User.objects.get(id=teacher_id)
+                if course_teacher.role != User.TEACHER:
+                    errormsg = "Selected user is not a teacher"
+                    save_data = False
+            else:
+                errormsg = "You must be an admin or teacher to add a section"
+                save_data = False
+            
+            if save_data:
+                new_section = Section(name=section_name, course=course_id, teacher=course_teacher) 
+                new_section.save()
+                if user.is_teacher():
+                    return HttpResponseRedirect(reverse('courses:section_detail', new_section.id))
+                else:
+                    return HttpResponseRedirect(reverse('courses:detail', course_id))
+
+        except KeyError:
+            errormsg = "Invalid request to add_section"
+        except DataError:
+            errormsg = "Invalid data supplied"
+    else:
+        errormsg = "Not logged in"
+
+    return course(request, user, course_id, errormsg=errormsg)
+    

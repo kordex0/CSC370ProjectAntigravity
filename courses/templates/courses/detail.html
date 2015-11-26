@@ -9,15 +9,27 @@
 </ul>
 
 {% if user and user.is_admin %}
-<h2>Delete this course</h2>
-<form action="{% url 'courses:delete_course' %}" method="post">
+<form action="{% url 'courses:add_section' course.id %}" method="post">
 {% csrf_token %}
-<input type="hidden" name="course_id" value="{{course.id}}">
+<label for="teacher_id">Teacher ID</label><br />
+<input type="input" name="teacher_id" id="teacher_id" /><br />
+<label for="section_name">Section Name<br />
+<input type="input" name="section_name" id="section_name" /><br />
+<input type="submit" value="Add section" />
+</form>
+<h2>Delete this course</h2>
+<form action="{% url 'courses:delete_course' course.id %}" method="post">
+{% csrf_token %}
 <input type="submit" value="Delete Course" />
 </form>
 {% endif %}
 
 {% if user and user.is_teacher %}
 <h2>Add a new section</h2>
-NOT YET IMPLEMENTED
+<form action="{% url 'courses:add_section' %}" method="post">
+{% csrf_token %}
+<label for="section_name">Section Name<br />
+<input type="input" name="section_name" id="section_name" /><br />
+<input type="submit" value="Add section" />
+</form>
 {% endif %}

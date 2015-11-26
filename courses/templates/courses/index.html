@@ -13,7 +13,7 @@
     <ul>
     {% for course in courses_list %}
         <li><a href="{% url 'courses:detail' course.id %}">{{course.name}}</a>
-            <form action="{% url 'courses:delete_course' %}" method="post">
+            <form action="{% url 'courses:delete_course' course.id %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="course_id" value="{{course.id}}"/>
             <input type="submit" value="Delete Course" />
