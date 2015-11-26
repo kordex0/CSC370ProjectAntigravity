@@ -12,7 +12,7 @@
 <form action="{% url 'courses:add_section' course.id %}" method="post">
 {% csrf_token %}
 <label for="teacher_id">Teacher</label><br />
-<select>
+<select name=teacher_id id=teacher_id>
 {% for teacher in teacher_list %}
 <option value={{teacher.id}}>{{teacher}}</option>
 {% endfor %}

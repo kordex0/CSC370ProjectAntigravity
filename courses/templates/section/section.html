@@ -1,8 +1,13 @@
 {% load staticfiles %}
 {% include 'users/menu.html' %}
 
+{% if errormsg %}
+<h3>{{errormsg}}</h3>
+{% endif %}
+
 <h1>{{section}}</h1>
 <h2>Instructor: {{section.teacher}}</h2>
+
 
 <h3>Assignments:</h3>
 {% if assignments_list %}
@@ -22,7 +27,26 @@
 	{% for student in section.students.all %}
 	    <li>{{ student.django_user.first_name }}</li>
 	{% endfor %}
+    </ul>
 {% else %}
     <p>No students are enroled in this course.</p>
 {% endif %}
-</ul>
+
+{% if user and user.is_student %}
+<h3>Join the Section</h3>
+<form action="{% url 'courses:enroll' section.id %}" method="post">
+{% csrf_token %}
+<input type="submit" value="Join" />
+</form>
+{% elif user and user.is_admin %}
+<h3>Add students to section</h3>
+<form action="{% url 'courses:enroll' section.id %}" method="post">
+{% csrf_token %}
+<label for="student_id">Student</label><br />
+<select name=student_id id=student_id >
+{% for student in student_list %}
+<option value={{student.id}}>{{student}}</option>
+{% endfor %}
+<input type="submit" value="Add student" />
+</form>
+{% endif %}

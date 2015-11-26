@@ -11,5 +11,5 @@ urlpatterns = [
     url(r'^add_course/$', views.add_course, name="add_course"),
     url(r'^(?P<course_id>[0-9]+)/delete_course/$', views.delete_course, name="delete_course"),
     url(r'^(?P<course_id>[0-9]+)/add_section/$', views.add_section, name='add_section'),
-    
+    url(r'^(?P<section_id>[0-9]+)/enroll/$', views.enroll, name='enroll'),
 ]
