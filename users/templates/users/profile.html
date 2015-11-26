@@ -21,6 +21,7 @@ This account is not registered as a student, teacher, or admin.
 
 {% if user.is_student %}
     
+    <!-- SECTIONS -->
     <link rel="stylesheet" type="text/css" href="{% static 'display_box.css' %}" />
 
     <div class="display_box">
@@ -30,47 +31,45 @@ This account is not registered as a student, teacher, or admin.
             {% for section in sections_list %}
                 <li>
                     <a href="{% url 'courses:section_detail' section.id %}">{{section}}</a>
-                    <form class="delete" action="url 'courses:section'" method="POST">
+                    <!--<form class="delete" action="url 'courses:add_section'" method="POST">
                         {% csrf_token %}
                         <input type="hidden" name="section_id" value="{{section.id}}"/>
                         <input type="submit" value="X"/>
-                    </form>
+                    </form>-->
                 </li>
             {% endfor %}
             </ul>
         </div>
     </div>
-
-    {% if sections_list.count > 0 %}
-        <h2>You are enrolled in the following sections:</h2>
-        <ul>
-        {% for section in sections_list %}
-            <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
-        {% endfor %}
-        </ul>
-	<h2>Open assignments:</h2>
-        {% if due_assignments_list %}
+    
+    <div class="display_box">
+        <div class="header">Due</div>
+        <div class="content">
             <ul>
             {% for assignment in due_assignments_list %}
-                <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a> Due: {{assignment.due_date}}</li>
+                <li>
+                    <a href="{% url 'assignments:detail' assignment.id %}">{{assignment}} Due: {{assignment.due_date}}</a>
+                </li>
             {% endfor %}
             </ul>
-        {% else %}
-            <p>No assignments are due.</p>
-        {% endif %}
-        <h2>All assignments:</h2>
-        {% if assignments_list %}
+        </div>
+    </div>
+    
+    <div class="display_box">
+        <div class="header">Assignments</div>
+        <div class="content">
             <ul>
             {% for assignment in assignments_list %}
-                <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a></li>
+                <li>
+                    <a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a>
+                </li>
             {% endfor %}
             </ul>
-        {% else %}
-            <p>No assignments are available.</p>
-        {% endif %}
-    {% else %}
-        <p>You are not enrolled in any sections.</p>
-    {% endif %}
+        </div>
+    </div>
+    
+    <div class="clearfix"></div>
+    
 {% elif user.is_teacher %}
     {% if sections_list.count > 0 %}
         <h2>You are teaching the following sections:</h2>
