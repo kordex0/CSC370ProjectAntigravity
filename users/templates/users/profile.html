@@ -18,3 +18,37 @@ This account is not registered as a student, teacher, or admin.
 {% endif %}
 <br/>
 <a href={% url 'users:user_logout' %}>Log in as someone else</a>
+
+{% if user.is_student %}
+    {% if sections_list.count > 0 %}
+        <h2>You are enrolled in the following sections:</h2>
+        <ul>
+        {% for section in sections_list %}
+            <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
+        {% endfor %}
+        </ul>
+        <h2>Assignments:</h2>
+        {% if assignments_list %}
+            <ul>
+            {% for assignment in assignments_list %}
+                <li><a href="{% url 'courses:assignment_detail' assignment.id %}">{{assignment.name}}</a></li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No assignments are available.</p>
+        {% endif %}
+    {% else %}
+        <p>You are not enrolled in any sections.</p>
+    {% endif %}
+{% elif user.is_teacher %}
+    {% if sections_list.count > 0 %}
+        <h2>You are teaching the following sections:</h2>
+        <ul>
+        {% for section in sections_list %}
+            <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>You are not teaching any sections.</p>
+    {% endif %}
+{% endif %}
