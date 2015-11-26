@@ -5,6 +5,18 @@ from django.contrib.auth.models import User as DjangoUser
 from django.core.exceptions import ValidationError
 
 
+class TeacherManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=User.TEACHER)
+
+class StudentManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=User.STUDENT)
+
+class AdminManager(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(role=User.ADMIN)
+
 class User(models.Model):
     ADMIN = 0
     TEACHER = 1
@@ -16,6 +28,10 @@ class User(models.Model):
     )
     django_user = models.OneToOneField(DjangoUser, related_name="user")
     role = models.SmallIntegerField(choices=ROLE_CHOICES)
+
+    teachers = TeacherManager() 
+    admins = AdminManager() 
+    students = StudentManager() 
     
     def __str__(self):
         return self.django_user.first_name + " " + self.django_user.last_name

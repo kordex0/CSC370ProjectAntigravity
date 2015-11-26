@@ -14,9 +14,13 @@ from assignments.models import Assignment
 def course(request, user, id, errormsg=None):
     try:
         course = Course.objects.get(id=id)
+        if user and user.is_admin():
+            teacher_list = User.teachers.all()
+        else:
+            teacher_list = []
     except Course.DoesNotExist:
         raise Http404("Course does not exist")
-    return render(request, 'courses/detail.html', {'course': course, 'user': user, 'errormsg':errormsg })
+    return render(request, 'courses/detail.html', {'course': course, 'user': user, 'errormsg':errormsg, 'teacher_list': teacher_list })
 
 def section_detail(request, id):
     try:
