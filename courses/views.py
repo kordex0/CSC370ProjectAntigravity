@@ -22,13 +22,23 @@ def course(request, user, id, errormsg=None):
         raise Http404("Course does not exist")
     return render(request, 'courses/detail.html', {'course': course, 'user': user, 'errormsg':errormsg, 'teacher_list': teacher_list })
 
-def section_detail(request, id):
+@get_request_user
+def section_detail(request, user, id, errormsg=None):
     try:
         section = Section.objects.get(id=id)
         assignments_list = Assignment.objects.filter(section=id)
+        if user.is_admin():
+            student_list = User.students.all()
+        else:
+            student_list = None
     except Section.DoesNotExist:
         raise Http404("Section does not exist")
-    return render(request, 'section/section.html', {'section': section, 'assignments_list': assignments_list})
+    context = { 'section': section,
+                'user':user, 
+                'assignments_list': assignments_list, 
+                'student_list': student_list,
+                'errormsg': errormsg,}
+    return render(request, 'section/section.html', context)
     
 def index(request, errormsg=None):
     do_json = request.GET.get('json', False)
@@ -145,3 +155,36 @@ def add_section(request, user, course_id):
 
     return course(request, user, id=course_id, errormsg=errormsg)
     
+@get_request_user
+def enroll(request, user, section_id):
+    save_data = True 
+    try:
+        section = Section.objects.get(id=section_id)
+    except DataError:
+        errormsg = "Invalid data supplied"
+        save_data = False
+    if user and user.is_student():
+        student = user
+    elif user and user.is_admin():
+        try:
+            student_id = request.POST['student_id']
+            student = User.students.get(id=student_id)
+        except KeyError:
+            errormsg = "Invalid request to enroll"
+            save_data = False
+        except User.DoesNotExist:
+            errormsg = "Invalid student to enroll"
+            save_data = False
+    else:
+        errormsg = "Must be logged in as a student or admin to change enrollment"
+        save_data = False
+    
+    if save_data:
+        section.students.add(student)
+        return HttpResponseRedirect(reverse('courses:section_detail', args=(section.id,)))
+    else:
+        return section_detail(request, section_id, errormsg) 
+        
+@get_request_user
+def withdraw(request, user, section_id):
+    pass
