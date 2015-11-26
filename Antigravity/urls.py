@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.generic import RedirectView
 
 urlpatterns = [
     url(r'^assignments/', include('assignments.urls', namespace='assignments')),
     url(r'^courses/', include('courses.urls', namespace='courses')),
     url(r'^users/', include('users.urls', namespace='users')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^/?$', RedirectView.as_view(pattern_name='users:user_profile'))
 ]
