@@ -27,7 +27,17 @@ This account is not registered as a student, teacher, or admin.
             <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
         {% endfor %}
         </ul>
-        <h2>Assignments:</h2>
+	<h2>Open assignments:</h2>
+        {% if due_assignments_list %}
+            <ul>
+            {% for assignment in due_assignments_list %}
+                <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a> Due: {{assignment.due_date}}</li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>No assignments are due.</p>
+        {% endif %}
+        <h2>All assignments:</h2>
         {% if assignments_list %}
             <ul>
             {% for assignment in assignments_list %}
