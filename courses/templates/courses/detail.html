@@ -10,31 +10,32 @@
 
 {% if user and user.is_admin %}
 <form action="{% url 'courses:add_section' course.id %}" method="post">
-{% csrf_token %}
-<label for="teacher_id">Teacher</label><br />
-<select name=teacher_id id=teacher_id>
-{% for teacher in teacher_list %}
-<option value={{teacher.id}}>{{teacher}}</option>
-{% endfor %}
-</select>
-<br/>
-<label for="section_name">Section Name<br />
-<input type="input" name="section_name" id="section_name" /><br />
-<input type="submit" value="Add section" />
+    {% csrf_token %}
+    <label for="teacher_id">Teacher</label><br />
+    <select name=teacher_id id=teacher_id>
+    {% for teacher in teachers %}
+        <option value={{teacher.id}}>{{teacher}}</option>
+    {% endfor %}
+    </select>
+    <br/>
+    <label for="section_name">Section Name</label><br />
+    <input type="input" name="section_name" id="section_name" /><br />
+    <input type="submit" value="Add section" />
 </form>
+
 <h2>Delete this course</h2>
 <form action="{% url 'courses:delete_course' course.id %}" method="post">
-{% csrf_token %}
-<input type="submit" value="Delete Course" />
+    {% csrf_token %}
+    <input type="submit" value="Delete Course" />
 </form>
 {% endif %}
 
 {% if user and user.is_teacher %}
 <h2>Add a new section</h2>
 <form action="{% url 'courses:add_section' course.id %}" method="post">
-{% csrf_token %}
-<label for="section_name">Section Name<br />
-<input type="input" name="section_name" id="section_name" /><br />
-<input type="submit" value="Add section" />
+    {% csrf_token %}
+    <label for="section_name">Section Name</label><br />
+    <input type="input" name="section_name" id="section_name" /><br />
+    <input type="submit" value="Add section" />
 </form>
 {% endif %}

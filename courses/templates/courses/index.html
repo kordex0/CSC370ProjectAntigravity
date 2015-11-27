@@ -9,23 +9,18 @@
 <h2 class=error>ERROR: {{errormsg}}</h2>
 {% endif %}
 
-{% if courses_list and user and user.is_admin %}
+{% if courses %}
     <ul>
-    {% for course in courses_list %}
+    {% for course in courses %}
         <li><a href="{% url 'courses:detail' course.id %}">{{course.name}}</a>
+        {%  if user and user.is_admin %}
             <form action="{% url 'courses:delete_course' course.id %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="course_id" value="{{course.id}}"/>
-            <input type="submit" value="Delete Course" />
+                {% csrf_token %}
+                <input type="hidden" name="course_id" value="{{course.id}}"/>
+                <input type="submit" value="Delete Course" />
             </form>
+        {% endif %}
         </li>
-    {% endfor %}
-    </ul>
-</form>
-{% elif courses_list %}
-    <ul>
-    {% for course in courses_list %}
-        <li><a href="{% url 'courses:detail' course.id %}">{{course.name}}</a></li>
     {% endfor %}
     </ul>
 {% else %}
@@ -35,9 +30,9 @@
 {% if user and user.is_admin %}
 <h2>Add a new course</h2>
 <form action="{% url 'courses:add_course' %}" method="post">
-{% csrf_token %}
-<label for="course_name">New Course Name</label><br />
-<input type="text" name="course_name" id="course_name" value="" /><br />
-<input type="submit" value="Add Course" />
+    {% csrf_token %}
+    <label for="course_name">New Course Name</label><br />
+    <input type="text" name="course_name" id="course_name" value="" /><br />
+    <input type="submit" value="Add Course" />
 </form>
 {% endif %}
