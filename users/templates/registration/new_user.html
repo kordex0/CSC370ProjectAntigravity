@@ -1,0 +1,11 @@
+<h1>Site Registration</h1>
+
+<form method="post" action="{% url 'users:new_user' %}">
+{% csrf_token %}
+<table>
+{{form.as_table}}
+</table>
+<input type="submit" value="Join the site!">
+</table>
+
+
