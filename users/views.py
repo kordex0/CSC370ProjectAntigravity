@@ -1,12 +1,19 @@
 from django.shortcuts import render
-from django.http import Http404, JsonResponse
+from django import forms
+from django.http import Http404, JsonResponse, HttpResponseRedirect
 from django.core import serializers
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User as DjangoUser
+from django.contrib.auth import login, authenticate
 from django.utils import timezone
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.db import IntegrityError, DataError
 
 from .models import User
 from courses.models import Section
 from assignments.models import Assignment
+
+from .forms import NewUserForm
 
 @login_required
 def user_profile(request):
@@ -32,3 +39,33 @@ def user_profile(request):
     except User.DoesNotExist:
         user = False #quick fix.
     return render(request, 'users/profile.html', {'user': user})
+
+def new_user(request):
+    if request.method == 'POST':
+        form = NewUserForm(request.POST)
+        if form.is_valid():
+            formdata = form.cleaned_data
+            if formdata['password'] != formdata['password_retyped']:
+                form.add_error('password', "Password must match retyped")
+            else:
+                try:
+                    django_user = DjangoUser.objects.create_user(formdata['username'], password=formdata['password'])
+                    django_user.first_name = formdata['first_name']
+                    django_user.last_name = formdata['last_name']
+                    django_user.save()
+                    user = User(django_user=django_user, role=formdata['role'])
+                    user.save()
+                    user = authenticate(username=formdata['username'], password=formdata['password'])
+                    login(request, user) 
+                    return HttpResponseRedirect(reverse('users:user_profile'))
+                except (IntegrityError, DataError):
+                    form.add_error(None, "Sorry, couldn't create that user.")
+    else:
+        form = NewUserForm()
+    return render(request, 'registration/new_user.html', {'form': form})
+
+        
+
+                
+                
+
