@@ -1,12 +1,10 @@
 {% load staticfiles %}
 {% include 'users/menu.html' %}
 
-<link rel="stylesheet" type="text/css" href="{% static 'assignments/styles.css' %}" />
-
-{% if assignments_list %}
+{% if assignments %}
     <ul>
-    {% for assignment in assignments_list %}
-        <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment.name}}</a></li>
+    {% for assignment in assignments %}
+        <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a></li>
     {% endfor %}
     </ul>
 {% else %}

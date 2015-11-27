@@ -10,9 +10,9 @@
 
 
 <h3>Assignments:</h3>
-{% if assignments_list %}
+{% if assignments %}
     <ul>
-    {% for assignment in assignments_list %}
+    {% for assignment in assignments %}
         <li><a href="{% url 'courses:assignment_detail' assignment.id %}">{{assignment.name}}</a></li>
     {% endfor %}
     </ul>
@@ -29,24 +29,25 @@
 	{% endfor %}
     </ul>
 {% else %}
-    <p>No students are enroled in this course.</p>
+    <p>No students are enrolled in this course.</p>
 {% endif %}
 
 {% if user and user.is_student %}
 <h3>Join the Section</h3>
 <form action="{% url 'courses:enroll' section.id %}" method="post">
-{% csrf_token %}
-<input type="submit" value="Join" />
+    {% csrf_token %}
+    <input type="submit" value="Join" />
 </form>
 {% elif user and user.is_admin %}
 <h3>Add students to section</h3>
 <form action="{% url 'courses:enroll' section.id %}" method="post">
-{% csrf_token %}
-<label for="student_id">Student</label><br />
-<select name=student_id id=student_id >
-{% for student in student_list %}
-<option value={{student.id}}>{{student}}</option>
-{% endfor %}
-<input type="submit" value="Add student" />
+    {% csrf_token %}
+    <label for="student_id">Student</label><br />
+    <select name=student_id id=student_id >
+    {% for student in students %}
+        <option value={{student.id}}>{{student}}</option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="Add student" />
 </form>
 {% endif %}
