@@ -5,6 +5,9 @@ from django.http import Http404, JsonResponse
 from django.core import serializers
 
 from .models import Assignment
+from users.models import User
+from users.decorators import get_request_user
+from courses.models import Course, Section
 
 def assignment(request, id):
     try:
@@ -29,3 +32,17 @@ def index(request):
         # second: template name
         # third: dictionary (optimal)
         return render(request, 'assignments/index.html', context)
+
+@get_request_user
+def add_assignment(request, user):
+    pass
+
+@get_request_user
+def submit_assignment(request, user):
+    pass
+
+@get_request_user
+def extend(request, assignment):
+    """Grant a 2 day extension to an assignment"""
+    pass
+
