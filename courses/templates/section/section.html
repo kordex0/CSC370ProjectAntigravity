@@ -21,7 +21,7 @@
 {% endif %}
 
 {% if user and user == section.teacher %}
-<a href="{url 'assignments:add_new'}">Create a New Assignment</a>
+<a href="{% url 'courses:new_assignment' section.id %}">Create a New Assignment</a>
 {% endif %}
 
 <h3>Students:</h3>
