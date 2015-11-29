@@ -20,6 +20,9 @@
     <p>No assignments available.</p>
 {% endif %}
 
+{% if user and user == section.teacher %}
+<a href="{url 'assignments:add_new'}">Create a New Assignment</a>
+{% endif %}
 
 <h3>Students:</h3>
 {% if section.students.all.count %}
@@ -32,13 +35,14 @@
     <p>No students are enrolled in this course.</p>
 {% endif %}
 
-{% if user and user.is_student %}
+{% if user %}
+{% if user.is_student %}
 <h3>Join the Section</h3>
 <form action="{% url 'courses:enroll' section.id %}" method="post">
     {% csrf_token %}
     <input type="submit" value="Join" />
 </form>
-{% elif user and user.is_admin %}
+{% elif user.is_admin %}
 <h3>Add students to section</h3>
 <form action="{% url 'courses:enroll' section.id %}" method="post">
     {% csrf_token %}
@@ -50,4 +54,5 @@
     </select>
     <input type="submit" value="Add student" />
 </form>
+{% endif %}
 {% endif %}
