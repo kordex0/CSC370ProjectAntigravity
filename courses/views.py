@@ -1,13 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect, HttpResponseForbidden
 from django.core.urlresolvers import reverse
-from django.db import DataError
+from django.db import IntegrityError, DataError
 
 from .models import Course, Section
 from users.models import User
 from users.decorators import get_request_user
 from assignments.models import Assignment
 
+from assignments.forms import NewAssignmentForm
 
 @get_request_user
 def course_index(request, user, errormsg=None):
@@ -31,8 +32,6 @@ def section_detail(request, user, id, errormsg=None):
     students = []
     if user and user.is_admin():
         students = User.students.all()
-    if user and section.teacher = user:
-        pass 
     context = { 'section': section,
                 'user':user,
                 'assignments': assignments,
@@ -47,7 +46,6 @@ def assignment_index(request, section_id):
     return render(request, 'assignments/index.html', context)
 
 def assignment_detail(request, assignment_id):
-<<<<<<< Updated upstream
     assignment = get_object_or_404(Assignment, id=assignment_id)
     context = {'assignment': assignment}
     return render(request, 'assignments/detail.html', context)
@@ -158,6 +156,31 @@ def enroll(request, user, section_id):
         return HttpResponseRedirect(reverse('courses:section_detail', args=(section.id,)))
     else:
         return section_detail(request, section_id, errormsg)
+
+@get_request_user
+def new_assignment(request, user, section_id):
+    try:
+        section = Section.objects.get(id=section_id)
+    except Section.DoesNotExist:
+        raise Http404("No such section!")
+    if section.teacher != user:
+        return HttpResponseForbidden("<h1>Not your class!</h1>")
+
+    if request.method == 'POST':
+        form = NewAssignmentForm(request.POST)
+        if form.is_valid():
+            formdata = form.cleaned_data
+            try:
+                assignment = Assignment(name=formdata['name'], description=formdata['description'], due_date=formdata['due_date'], section=section)
+                assignment.save()
+                return HttpResponseRedirect(reverse('assignments:detail', args=(assignment.id,)))
+            except (IntegrityError, DataError):
+                form.add_error(None, "Sorry, couldn't create that assignment.")
+    else:
+        form = NewAssignmentForm()
+    return render(request, 'section/new_assignment.html', {'form': form, 'section_id': section_id})
+
+
 
 @get_request_user
 def withdraw(request, user, section_id):
