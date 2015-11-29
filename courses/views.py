@@ -180,8 +180,3 @@ def new_assignment(request, user, section_id):
         form = NewAssignmentForm()
     return render(request, 'section/new_assignment.html', {'form': form, 'section_id': section_id})
 
-
-
-@get_request_user
-def withdraw(request, user, section_id):
-    pass

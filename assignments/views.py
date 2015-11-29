@@ -21,12 +21,3 @@ def assignment_index(request, user):
     context = {'assignments': assignments, 'user': user}
     return render(request, 'assignments/index.html', context)
 
-@get_request_user
-def submit_assignment(request, user):
-    pass
-
-@get_request_user
-def extend(request, assignment):
-    """Grant a 2 day extension to an assignment"""
-    pass
-
