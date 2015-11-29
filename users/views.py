@@ -36,6 +36,8 @@ def user_profile(request, user):
             if assignment.due_date > timezone.now():
                 due_assignments.append(assignment)
         context = {'user': user, 'sections': sections, 'assignments': assignments, 'due_assignments': due_assignments}
+    else:
+        context = {'user': user}
 
     return render(request, 'users/profile.html', context)
 
