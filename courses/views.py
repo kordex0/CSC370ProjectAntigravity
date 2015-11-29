@@ -20,7 +20,10 @@ def course_index(request, user, errormsg=None):
 
 @get_request_user
 def course_detail(request, user, course_id, errormsg=None):
-    course = get_object_or_404(Course, id=course_id)
+    try:
+        course = Course.objects.prefetch_related('sections').get(id=course_id)
+    except Course.DoesNotExist:
+        raise Http404("course does not exist")
     teachers = []
     if user and user.is_admin():
         teachers = User.teachers.all()
@@ -29,8 +32,12 @@ def course_detail(request, user, course_id, errormsg=None):
 
 @get_request_user
 def section_detail(request, user, id, errormsg=None):
-    section = get_object_or_404(Section, id=id)
-    assignments = Assignment.objects.filter(section=id)
+    try:
+        section = Section.objects.select_related('course')\
+            .prefetch_related('assignments', 'students', 'students__django_user').get(id=id)
+    except Section.DoesNotExist:
+        raise Http404("Section does not exist")
+    assignments = section.assignments.all()
     students = []
     enrolled = False
     if user and user.is_admin():

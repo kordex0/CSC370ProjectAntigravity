@@ -28,9 +28,10 @@ def user_profile(request, user):
         context = {'user': user, 'sections': sections}
     elif user.is_student():
         due_assignments = []
-        sections = Section.objects.filter(students=user.id)
+        sections = Section.objects.select_related('course')\
+            .prefetch_related('assignments').filter(students=user.id)
         for section in sections:
-            assignments.extend(Assignment.objects.filter(section=section))
+            assignments.extend(section.assignments.all())
         for assignment in assignments:
             if assignment.due_date > timezone.now():
                 due_assignments.append(assignment)

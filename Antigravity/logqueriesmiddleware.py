@@ -45,4 +45,5 @@ class SqlPrintingMiddleware(object):
                 print("%s%s\n" % (" "*indentation, sql))
             replace_tuple = (" "*indentation, str(total_time))
             print("%s\033[1;32m[TOTAL TIME: %s seconds]\033[0m" % replace_tuple)
+            print(len(connection.queries))
         return response

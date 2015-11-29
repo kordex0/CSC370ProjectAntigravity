@@ -37,7 +37,7 @@ def create_users(apps, schema_editor):
     duser.save()
     User(django_user=duser, role=STUDENT).save()
 
-    duser = DjangoUser(username='hsort', first_name='Holly', last_name='Short', password=make_password('hsort'), is_superuser=False, is_staff=False,)
+    duser = DjangoUser(username='hshort', first_name='Holly', last_name='Short', password=make_password('hshort'), is_superuser=False, is_staff=False,)
     duser.save()
     User(django_user=duser, role=STUDENT).save()
 
