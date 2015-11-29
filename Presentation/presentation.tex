@@ -36,35 +36,83 @@
 
 \title[Group Project]{Simple Course Management System}
 \subtitle{Python - Django - Postgres}
-\author{Antigravity - Chris Papke, Jimmy Pardey, \\Thomas Watkin, Stefanie Fritz}
+\author{Antigravity - Chris Papke, Jimmy Pardey, \\Stefanie Fritz, Thomas Watkin}
 \date{\today}
 
 \begin{frame}[plain]
 \titlepage
 \end{frame}
 
-{
-\usebackgroundtemplate{\includegraphics[width=\paperwidth]{picture.jpg}}%
 \begin{frame}[fragile]
-\frametitle{Replace with Real Picture}
+\frametitle{Model}
 
-\begin{center}
-	DEMO!
-\end{center}
+\begin{lstlisting}[basicstyle=\small]
+class Assignment(models.Model):
+    name = models.CharField(max_length=255)
+    section = models.ForeignKey('courses.Section', 
+        related_name='assignments')
+    description = models.TextField()
+    due_date = models.DateTimeField()
 
+    def __str__(self):
+        return str(self.section) + " - " + self.name
+\end{lstlisting}
 \end{frame}
-}
 
-\section{Python}
 \begin{frame}[fragile]
-\frametitle{Python example}
+\frametitle{View}
 
-\begin{lstlisting}
-def hello(name):
-    print 'Hello', name
- 
-if __name__=='__main__':
-    hello('Me')   
+\begin{lstlisting}[basicstyle=\tiny]
+@login_required
+@get_request_user
+def user_profile(request, user):
+    sections = []
+    assignments = []
+    if user.is_teacher():
+        sections = Section.objects.filter(teacher=user.id)
+        context = {'user': user, 'sections': sections}
+    elif user.is_student():
+        due_assignments = []
+        sections = Section.objects.select_related('course')\
+            .prefetch_related('assignments').filter(students=user.id)
+        for section in sections:
+            assignments.extend(section.assignments.all())
+        for assignment in assignments:
+            if assignment.due_date > timezone.now():
+                due_assignments.append(assignment)
+        context = {'user': user, 'sections': sections, 
+            'assignments': assignments, 'due_assignments': due_assignments}
+
+    return render(request, 'users/profile.html', context)  
+\end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Template}
+
+\begin{lstlisting}[basicstyle=\tiny]
+{% if user %}
+{% if user.is_student and not enrolled %}
+<h3>Join the Section</h3>
+<form action="{% url 'courses:enroll' section.id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" value="Join" />
+</form>
+{% elif user.is_admin %}
+<h3>Add students to section</h3>
+<form action="{% url 'courses:enroll' section.id %}" method="post">
+    {% csrf_token %}
+    <label for="student_id">Student</label><br />
+    <select name=student_id id=student_id >
+    {% for student in students %}
+        <option value={{student.id}}>{{student}}</option>
+    {% endfor %}
+    </select>
+    <input type="submit" value="Add student" />
+</form>
+{% endif %}
+{% endif %}  
 \end{lstlisting}
 \end{frame}
 
