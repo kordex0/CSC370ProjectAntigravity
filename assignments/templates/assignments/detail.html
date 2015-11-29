@@ -5,3 +5,7 @@
 {{ assignment.description}}
 <h3>Due</h3>
 {{ assignment.due_date}}
+
+{% if user and user == section.teacher %}
+<a href="{url 'assignments:add_new'}">Create a New Assignment</a>
+{% endif %}
