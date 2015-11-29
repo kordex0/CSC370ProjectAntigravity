@@ -32,7 +32,7 @@
     <p>No students are enrolled in this course.</p>
 {% endif %}
 
-{% if user and user.is_student %}
+{% if user and user.is_student and not enrolled%}
 <h3>Join the Section</h3>
 <form action="{% url 'courses:enroll' section.id %}" method="post">
     {% csrf_token %}

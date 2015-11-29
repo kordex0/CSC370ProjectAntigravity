@@ -30,13 +30,20 @@ def section_detail(request, user, id, errormsg=None):
     section = get_object_or_404(Section, id=id)
     assignments = Assignment.objects.filter(section=id)
     students = []
-    if user.is_admin():
+    enrolled = False
+    if user and user.is_admin():
         students = User.students.all()
+
+    if user and user.is_student():
+        if Section.objects.filter(students=user, id=id).exists():
+            enrolled = True
+
     context = {'section': section,
                'user': user,
                'assignments': assignments,
                'students': students,
-               'errormsg': errormsg}
+               'errormsg': errormsg,
+               'enrolled': enrolled}
     return render(request, 'section/section.html', context)
 
 def assignment_index(request, section_id):
