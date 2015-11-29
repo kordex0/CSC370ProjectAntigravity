@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 
 class Assignment(models.Model):
@@ -11,6 +12,9 @@ class Assignment(models.Model):
         return str(self.section) + " - " + self.name
 
 class Submission(models.Model):
-    assignment = models.ForeignKey('Assignment')
+    assignment = models.ForeignKey('Assignment', related_name='submissions')
     students = models.ManyToManyField('users.User')
+    submission = models.TextField(null = True)
+    submitted = models.DateTimeField(default = timezone.now)
+    
 

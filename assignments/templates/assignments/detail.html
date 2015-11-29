@@ -6,6 +6,11 @@
 <h3>Due</h3>
 {{ assignment.due_date}}
 
-{% if user and user == section.teacher %}
-<a href="{url 'assignments:add_new'}">Create a New Assignment</a>
+{% if can_submit %}
+<p>
+<a href="{% url 'assignments:submission' assignment.id %}">Submit Your Answers</a>
+{% endif %}
+
+{% if submitted %}
+<p> You submitted this assignment already.
 {% endif %}

@@ -1,0 +1,10 @@
+{% load staticfiles %}
+{% include 'users/menu.html' %}
+
+<form method="post" action="{% url 'assignments:submission' assignment_id %}">
+{% csrf_token %}
+<table>
+{{form.as_table}}
+</table>
+<input type="submit" value="Submit your assignment">
+</form>
