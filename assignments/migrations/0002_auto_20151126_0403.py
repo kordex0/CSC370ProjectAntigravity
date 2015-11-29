@@ -14,7 +14,7 @@ def create_assignments(apps, schema_editor):
     Submission = apps.get_registered_model('assignments', 'Submission')
     
     sdent = User.objects.get(django_user__username='sdent')
-    hsort = User.objects.get(django_user__username='hsort')
+    hsort = User.objects.get(django_user__username='hshort')
     afowl = User.objects.get(django_user__username='afowl')
     okoboi = User.objects.get(django_user__username='okoboi')
     csc360a01 = Section.objects.get(name="A01", course__name="CSC360")

@@ -13,7 +13,7 @@ def create_courses(apps, schema_editor):
     jpan = User.objects.get(django_user__username='jpan')
     kwu = User.objects.get(django_user__username='kwu')
     sdent = User.objects.get(django_user__username='sdent')
-    hsort = User.objects.get(django_user__username='hsort')
+    hsort = User.objects.get(django_user__username='hshort')
     afowl = User.objects.get(django_user__username='afowl')
     okoboi = User.objects.get(django_user__username='okoboi')
     
