@@ -47,6 +47,7 @@ def assignment_index(request, section_id):
     return render(request, 'assignments/index.html', context)
 
 def assignment_detail(request, assignment_id):
+<<<<<<< Updated upstream
     assignment = get_object_or_404(Assignment, id=assignment_id)
     context = {'assignment': assignment}
     return render(request, 'assignments/detail.html', context)
