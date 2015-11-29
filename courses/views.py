@@ -1,5 +1,6 @@
+
 from django.shortcuts import render, get_object_or_404
-from django.http import Http404, HttpResponseRedirect
+from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.db import DataError
 
@@ -31,11 +32,11 @@ def section_detail(request, user, id, errormsg=None):
     students = []
     if user.is_admin():
         students = User.students.all()
-    context = { 'section': section,
-                'user':user,
-                'assignments': assignments,
-                'students': students,
-                'errormsg': errormsg,}
+    context = {'section': section,
+               'user': user,
+               'assignments': assignments,
+               'students': students,
+               'errormsg': errormsg}
     return render(request, 'section/section.html', context)
 
 def assignment_index(request, section_id):
@@ -54,8 +55,8 @@ def add_course(request, user):
     if user is not None:
         try:
             if user.is_admin():
-                coursename = request.POST['course_name']
-                new_course = Course(name=coursename)
+                course_name = request.POST['course_name']
+                new_course = Course(name=course_name)
                 new_course.save()
                 return HttpResponseRedirect(reverse('courses:index'))
             else:
@@ -89,7 +90,6 @@ def delete_course(request, user, course_id):
         errormsg = "Not logged in"
 
     return course_index(request, errormsg=errormsg)
-
 
 @get_request_user
 def add_section(request, user, course_id):

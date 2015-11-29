@@ -6,32 +6,27 @@
 <br/>
 
 {% if user.is_student %}
-    
+
     <!-- SECTIONS -->
 
     <div class="display_box">
         <div class="header">Classes</div>
         <div class="content">
             <ul>
-            {% for section in sections_list %}
+            {% for section in sections %}
                 <li>
                     <a href="{% url 'courses:section_detail' section.id %}">{{section}}</a>
-                    <!--<form class="delete" action="url 'courses:add_section'" method="POST">
-                        {% csrf_token %}
-                        <input type="hidden" name="section_id" value="{{section.id}}"/>
-                        <input type="submit" value="X"/>
-                    </form>-->
                 </li>
             {% endfor %}
             </ul>
         </div>
     </div>
-    
+
     <div class="display_box">
         <div class="header">Due</div>
         <div class="content">
             <ul>
-            {% for assignment in due_assignments_list %}
+            {% for assignment in due_assignments %}
                 <li>
                     <a href="{% url 'assignments:detail' assignment.id %}">{{assignment}} Due: {{assignment.due_date}}</a>
                 </li>
@@ -39,12 +34,12 @@
             </ul>
         </div>
     </div>
-    
+
     <div class="display_box">
         <div class="header">Assignments</div>
         <div class="content">
             <ul>
-            {% for assignment in assignments_list %}
+            {% for assignment in assignments %}
                 <li>
                     <a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a>
                 </li>
@@ -52,17 +47,22 @@
             </ul>
         </div>
     </div>
-    
+
     <div class="clearfix"></div>
-    
+
 {% elif user.is_teacher %}
     <div class="display_box">
         <div class="header">Sections</div>
         <div class="content">
             <ul>
-            {% for section in sections_list %}
+            {% for section in sections %}
                 <li>
                     <a href="{% url 'courses:section_detail' section.id %}">{{section}}</a>
+                    <!--<form class="delete" action="url 'courses:add_section'" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="section_id" value="{{section.id}}"/>
+                        <input type="submit" value="X"/>
+                    </form>-->
                 </li>
             {% endfor %}
             </ul>
