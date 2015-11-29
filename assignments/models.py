@@ -14,6 +14,6 @@ class Assignment(models.Model):
 class Submission(models.Model):
     assignment = models.ForeignKey('Assignment', related_name='submissions')
     students = models.ManyToManyField('users.User', related_name='submissions')
-    submission = models.TextField(null = True)
-    submitted = models.DateTimeField(default = timezone.now)
+    submission = models.TextField(null=True)
+    submitted = models.DateTimeField(default=timezone.now)
 
