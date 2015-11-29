@@ -29,8 +29,10 @@ def section_detail(request, user, id, errormsg=None):
     section = get_object_or_404(Section, id=id)
     assignments = Assignment.objects.filter(section=id)
     students = []
-    if user.is_admin():
+    if user and user.is_admin():
         students = User.students.all()
+    if user and section.teacher = user:
+        pass 
     context = { 'section': section,
                 'user':user,
                 'assignments': assignments,
