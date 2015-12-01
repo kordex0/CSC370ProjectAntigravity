@@ -12,6 +12,8 @@ from assignments.models import Assignment
 
 from assignments.forms import NewAssignmentForm
 
+import datetime
+
 @get_request_user
 def course_index(request, user, errormsg=None):
     courses = Course.objects.order_by('name')
@@ -186,7 +188,10 @@ def new_assignment(request, user, section_id):
         if form.is_valid():
             formdata = form.cleaned_data
             try:
-                assignment = Assignment(name=formdata['name'], description=formdata['description'], due_date=formdata['due_date'], section=section)
+                due_date = formdata['due_date']
+                due_time = formdata['due_time']
+                due_datetime = datetime.datetime.combine(due_date, due_time)
+                assignment = Assignment(name=formdata['name'], description=formdata['description'], due_date=due_datetime, section=section)
                 assignment.save()
                 return HttpResponseRedirect(reverse('assignments:detail', args=(assignment.id,)))
             except (IntegrityError, DataError):
