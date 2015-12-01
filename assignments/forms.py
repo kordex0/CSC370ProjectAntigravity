@@ -16,8 +16,7 @@ def now_plus_days(daycount):
 class NewAssignmentForm(forms.Form):
     name = forms.CharField(max_length=255)
     description = forms.CharField(widget=forms.Textarea)
-    due_date = forms.DateField(widget=SelectDateWidget,
-                               initial=now_plus_days(7))
+    due_date = forms.DateField(widget=SelectDateWidget, initial=now_plus_days(7))
     due_time = forms.TimeField(initial=datetime.time(17))
 
 class AssignmentSubmissionForm(forms.Form):

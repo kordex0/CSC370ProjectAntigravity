@@ -190,7 +190,6 @@ def new_assignment(request, user, section_id):
             try:
                 due_date = formdata['due_date']
                 due_time = formdata['due_time']
-                print("date: {}, time: {}".format(type(due_date),type(due_time)))
                 due_datetime = datetime.datetime.combine(due_date, due_time)
                 assignment = Assignment(name=formdata['name'], description=formdata['description'], due_date=due_datetime, section=section)
                 assignment.save()
