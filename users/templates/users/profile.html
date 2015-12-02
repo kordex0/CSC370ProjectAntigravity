@@ -1,7 +1,9 @@
 {% load staticfiles %}
-{% include 'users/menu.html' %}
 <link rel="stylesheet" type="text/css" href="{% static 'display_box.css' %}" />
-<h1>Hello {{user.django_user.first_name}}</h1>
+<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" />
+
+{% include 'users/menu.html' %}
+<h1 class='headline'>Hello {{user.django_user.first_name}}</h1>
 
 <br/>
 
