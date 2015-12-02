@@ -1,7 +1,7 @@
 #menu {
     height:50px; 
     width:100%; 
-    background-color:#666;
+    background-color:#566699;
     list-style-type:none;
     margin:0;
     padding:0;
@@ -22,4 +22,19 @@
     font-weight:bold;
     text-transform:uppercase;
     color:#fff
+}
+
+h1.headline
+{
+    display: inline-block;
+    margin-top: 0px; 
+    margin-bottom: 20px;
+    margin-left: 40px;
+    padding-left: 40px;
+    padding-right: 20px;
+    padding-bottom: 10px;
+    background:#566699;
+    color: #fff;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
 }

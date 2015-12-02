@@ -1,8 +1,6 @@
 {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
 {% include 'users/menu.html' %}
-
-<link rel="stylesheet" type="text/css" href="{% static 'courses/styles.css' %}" />
-
 <h1>All Courses</h1>
 
 {% if errormsg %}
