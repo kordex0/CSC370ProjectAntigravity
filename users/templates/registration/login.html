@@ -1,34 +1,24 @@
 {# Copied from the Django documentation #}
 {# https://docs.djangoproject.com/en/1.8/topics/auth/default/#all-authentication-views #}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'registration.css' %}" /> 
 
-{% if form.errors %}
-<p>Your username and password didn't match. Please try again.</p>
-{% endif %}
-
-{% if next %}
-    {% if user.is_authenticated %}
-    <p>Your account doesn't have access to this page. To proceed,
-    please login with an account that has access.</p>
-    {% else %}
-    <p>Please login to see this page.</p>
-    {% endif %}
-{% endif %}
+<div class=container>
+<div class=loginform>
+<h1>Login to Antigravity CRM</h1>
 
 <form method="post" action="{% url 'users:user_login' %}">
 {% csrf_token %}
 <table>
-<tr>
-    <td>{{ form.username.label_tag }}</td>
-    <td>{{ form.username }}</td>
-</tr>
-<tr>
-    <td>{{ form.password.label_tag }}</td>
-    <td>{{ form.password }}</td>
-</tr>
+<tbody>
+        {{form.as_table}}
+</tbody>
 </table>
 
-<input type="submit" value="login" />
+<input type="submit" class="submit" value="login" />
 <input type="hidden" name="next" value="{{ next }}" />
 </form>
 
 <a href="{% url 'users:new_user' %}">Not a user? Sign up here!</a>
+</div>
+</div>
