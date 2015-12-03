@@ -1,6 +1,11 @@
 {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" /> 
 {% include 'users/menu.html' %}
 
+<h1 class=headline> Add New Assignment for {{section}} </h1>
+<br/>
+
+<div class="generalform first_float">
 <form method="post" action="{% url 'courses:new_assignment' section_id %}">
 {% csrf_token %}
 <table>
@@ -8,3 +13,4 @@
 </table>
 <input type="submit" value="Add New Assignment">
 </form>
+</div>

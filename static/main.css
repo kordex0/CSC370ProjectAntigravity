@@ -1,0 +1,132 @@
+.generalform,
+.generalbox
+{
+    display: inline-block;
+    float: left;
+    margin: 10px;
+}
+
+.fancylink
+{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 5px;
+    border: 3px solid #000;
+    color: #CCF;
+    background: #009;
+}
+
+.first_float
+{
+    margin-left: 40px !important;
+}
+
+.errorlist 
+{
+    list-style-type: none;
+    padding: 0px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    text-align: right;
+}
+.errorlist li
+{
+    font-family: arial, sans-serif;
+    font-size: 16px;
+    display: inline-block;
+    color: #D00;
+    background: #FDFDFD;
+    border-top-right-radius: 4px;
+    border-top-left-radius: 4px;
+    padding-left: 7px;
+    padding-right: 7px;
+}
+
+.errorlist + input,
+.errorlist + textarea
+{
+    margin-top: 0px;
+}
+
+.generalform th,
+.generalform td
+{
+    padding-top:3px;
+    padding-bottom:3px;
+    border-top: 2px solid #229;
+}
+
+.generalform tr:last-of-type th,
+.generalform tr:last-of-type td
+{
+    border-bottom: 2px solid #229;
+}
+
+.generalform th
+{
+    padding-left: 30px;
+    padding-right: 10px;
+}
+
+.generalform td
+{
+    padding-right: 30px;
+    padding-left: 10px;
+}
+
+
+.generalform table 
+{
+    margin: 10px auto;
+    background-color: #ccF;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left: 30px;
+    padding-right: 30px;
+    border-collapse: collapse;
+    font-size: 20px;
+}
+
+.generalform input,
+.generalform textarea
+{
+    background: #FDFDFD;
+    font-size: 20px;
+    border-radius: 4px;
+    border: 0;
+}
+
+.generalform input[type=submit]
+{
+    font-size: 20px;
+    font-weight: bold;
+    padding: 3px 7px;
+    border-radius: 5px;
+    border: 3px solid #000;
+    color: #CCF;
+    background: #009;
+}
+
+.generalbox h1,
+.generalbox h2,
+.generalbox h3,
+.generalform h1,
+.generalform h2,
+.generalform h3
+{
+    padding: 4px;
+    padding-left: 10px;
+    background: #566699;
+    margin-top: 5px;
+    margin-bottom: 3px;
+    background: linear-gradient(to right, #115, #77AAFF);
+    color: #fff;
+    clear: both;
+}
+
+.generalform h2:first-of-type
+{
+    margin-top: 0px;
+}
+

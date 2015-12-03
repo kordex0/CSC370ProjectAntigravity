@@ -1,25 +1,54 @@
 {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'display_box.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" /> 
 {% include 'users/menu.html' %}
 
-<h1>{{course.name}}</h1>
-<ul>
-{% for section in course.sections.all %}
-    <li><a href="{% url 'courses:section_detail' section.id %}">{{section}}</a></li>
-{% endfor %}
-</ul>
+<h1 class=headline>{{course.name}}</h1>
+
+    <br/><br/>
+
+    <div class="display_box first_float">
+        <div class="header">section</div>
+        <div class="content">
+            <ul>
+            {% for section in course.sections.all %}
+                <li>
+                    <a href="{% url 'courses:section_detail' section.id %}">{{section}}</a>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+
 
 {% if user and user.is_admin %}
+<div class=formcontainer>
+<div class=generalform>
+<h2>Add a new section</h2>
 <form action="{% url 'courses:add_section' course.id %}" method="post">
     {% csrf_token %}
-    <label for="teacher_id">Teacher</label><br />
+    <table>
+    <tr>
+    <th>
+    <label for="teacher_id">Teacher</label>
+    </th>
+    <td>
     <select name=teacher_id id=teacher_id>
     {% for teacher in teachers %}
         <option value={{teacher.id}}>{{teacher}}</option>
     {% endfor %}
     </select>
-    <br/>
-    <label for="section_name">Section Name</label><br />
-    <input type="input" name="section_name" id="section_name" /><br />
+    </td>
+    </tr>
+    <tr>
+    <th>
+    <label for="section_name">Section Name</label>
+    </th>
+    <td>
+    <input type="input" name="section_name" id="section_name" />
+    </td>
+    </tr>
+    </table>
     <input type="submit" value="Add section" />
 </form>
 
@@ -28,14 +57,23 @@
     {% csrf_token %}
     <input type="submit" value="Delete Course" />
 </form>
+</div>
+</div>
 {% endif %}
 
 {% if user and user.is_teacher %}
+<div class=formcontainer>
+<div class=generalform>
 <h2>Add a new section</h2>
 <form action="{% url 'courses:add_section' course.id %}" method="post">
     {% csrf_token %}
-    <label for="section_name">Section Name</label><br />
-    <input type="input" name="section_name" id="section_name" /><br />
+    <table><tr><th>
+    <label for="section_name">Section Name</label>
+    </th><td>
+    <input type="input" name="section_name" id="section_name" />
+    <td></table>
     <input type="submit" value="Add section" />
 </form>
+</div>
+</div>
 {% endif %}

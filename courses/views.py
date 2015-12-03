@@ -198,5 +198,5 @@ def new_assignment(request, user, section_id):
                 form.add_error(None, "Sorry, couldn't create that assignment.")
     else:
         form = NewAssignmentForm()
-    return render(request, 'section/new_assignment.html', {'form': form, 'section_id': section_id})
+    return render(request, 'section/new_assignment.html', {'form': form, 'section_id': section_id, 'section': section})
 

@@ -1,6 +1,10 @@
 {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'display_box.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" /> 
 {% include 'users/menu.html' %}
-<h1>{{assignment.name}}</h1>
+<h1 class=headline>{{assignment.name}}</h1>
+<br/><br/>
+<div class="generalbox first_float">
 <h3>Description</h3>
 {{ assignment.description}}
 <h3>Due</h3>
@@ -8,9 +12,10 @@
 
 {% if can_submit %}
 <p>
-<a href="{% url 'assignments:submission' assignment.id %}">Submit Your Answers</a>
+<a class=fancylink href="{% url 'assignments:submission' assignment.id %}">Submit Your Answers</a>
 {% endif %}
 
 {% if submitted %}
 <p> You submitted this assignment already.
 {% endif %}
+</div>

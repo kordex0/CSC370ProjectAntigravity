@@ -1,13 +1,25 @@
 {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'display_box.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" /> 
 {% include 'users/menu.html' %}
+<h1 class='headline'>Assignments</h1>
+
+<br />
 
 {% if assignments %}
+    <div class="display_box first_float autoheightbox">
+        <div class="header">Assignments</div>
+        <div class="content">
     <ul>
     {% for assignment in assignments %}
         <li><a href="{% url 'assignments:detail' assignment.id %}">{{assignment}}</a></li>
     {% endfor %}
     </ul>
+    </div>
+    </div>
 {% else %}
-    <p>No assignments are available.</p>
+<div class="generalbox first_float">
+    <h2>No assignments are available.</h2>
+    </div>
 {% endif %}
 

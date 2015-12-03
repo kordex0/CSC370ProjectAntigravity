@@ -27,6 +27,7 @@
 h1.headline
 {
     display: inline-block;
+    clear: both;
     margin-top: 0px; 
     margin-bottom: 20px;
     margin-left: 40px;

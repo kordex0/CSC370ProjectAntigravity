@@ -1,7 +1,7 @@
 {% load staticfiles %}
 <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}" />
 {% include 'users/menu.html' %}
-<h1>All Courses</h1>
+<h1 class=headline>All Courses</h1>
 
 {% if errormsg %}
 <h2 class=error>ERROR: {{errormsg}}</h2>

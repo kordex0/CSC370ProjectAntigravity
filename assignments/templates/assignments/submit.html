@@ -1,10 +1,15 @@
 {% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static 'main.css' %}" /> 
 {% include 'users/menu.html' %}
+<h1 class=headline> Submit your answers for {{assignment}} </h1>
+<br/>
 
-<form method="post" action="{% url 'assignments:submission' assignment_id %}">
+<div class="generalform first_float">
+<form method="post" action="{% url 'assignments:submission' assignment.id %}">
 {% csrf_token %}
 <table>
 {{form.as_table}}
 </table>
 <input type="submit" value="Submit your assignment">
 </form>
+</div>

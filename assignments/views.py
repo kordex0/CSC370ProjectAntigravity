@@ -57,4 +57,4 @@ def submission(request, user, assignment_id):
                 form.add_error(None, "Sorry, couldn't submit")
     else:
         form = AssignmentSubmissionForm()
-    return render(request, 'assignments/submit.html', {'form': form, 'assignment_id': assignment_id})
+    return render(request, 'assignments/submit.html', {'form': form, 'assignment': assignment})
