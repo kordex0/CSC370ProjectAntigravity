@@ -12,7 +12,7 @@
     width: 300px;
     background-color: #EEF;
     margin: 10px;
-    float:left
+    float:left;
 }
 
 .display_box .header {
@@ -44,6 +44,11 @@
     height: auto !important;
 }
 
+.first_float
+{
+    margin-left: 40px !important;
+}
+
 .display_box .content ul {
     margin: 0;
     list-style: none;
@@ -61,21 +66,23 @@
 }
 
 .display_box li .delete {
-    float: right;
     margin: 0;
-    padding: 0;
+    padding: 1px;
+    float: right;
 }
 
 .display_box li .delete input {
-    font-size: 1em;
+    font-size: 16px;
+    font-weight: bold;
     margin: 0;
     padding: 0;
-    color: #922;
+    color: #FFF;
     cursor: pointer;
-    background-color: #777;
+    background-color: #000;
     border: none;
-    height: 19px;
-    opacity: 0;
+    height: 20px;
+    width: 20px;
+    opacity: .2;
     transition: opacity 0.5s, color 0.5s;
 }
 
